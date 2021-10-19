@@ -1,6 +1,7 @@
 package com.trilha.back.finacys.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,18 +42,12 @@ public class LancamentoController {
 
 	@GetMapping(value = "/lancamento", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Retorna uma Lista de lancamentos")
-	public ResponseEntity<List<LancamentoResponse>> buscarTodosLancamentos() {
+	public ResponseEntity<List<LancamentoResponse>> buscarTodosLancamentos(
+			@RequestParam(value = "lancamento_paid", required = false) Optional<Boolean> paid) {
 
-		return new ResponseEntity<List<LancamentoResponse>>(service.buscarTodosLancamentos(), HttpStatus.OK);
+		return new ResponseEntity<List<LancamentoResponse>>(service.buscarTodosLancamentos(paid), HttpStatus.OK);
 	}
-	
-	@GetMapping(value = "/lancamentoPago", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<LancamentoResponse>> buscarLancamentosPagos(@RequestParam(value = "lancamento_paid", required = false) boolean paid){
-		
-		return new ResponseEntity<List<LancamentoResponse>>(service.listarLancamentosPagos(paid), HttpStatus.OK);
-	}
- 
-	
+
 	@PostMapping(value = "/lancamento", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Cadastra um lancamento")
 	public ResponseEntity<LancamentoResponse> inserirLancamento(@RequestBody LancamentoRequest lancamentoRequest)

@@ -41,12 +41,14 @@ public class LancamentoServiceImpl {
 
 	}
 
-	public List<LancamentoResponse> buscarTodosLancamentos() {
-		List<Lancamento> todosLancamentos = repository.findAll();
-		if (todosLancamentos.isEmpty()) {
-			throw new ValidateException("Não há lancamentos cadastrados ", HttpStatus.NOT_FOUND);
+	public List<LancamentoResponse> buscarTodosLancamentos(Optional<Boolean> paid) {
+
+		if (!paid.isPresent()) {
+			List<Lancamento> todosLancamentos = repository.findAll();
+			return todosLancamentos.stream().map(this::converterEntityParaResponse).collect(Collectors.toList());
 		}
-		return todosLancamentos.stream().map(this::converterEntityParaResponse).collect(Collectors.toList());
+		List<Lancamento> listarLancamentosPagos = repository.listarLancamentosPagos(paid);
+		return listarLancamentosPagos.stream().map(this::converterEntityParaResponse).collect(Collectors.toList());
 	}
 
 	public LancamentoResponse inserirLancamento(LancamentoRequest request) {
@@ -88,13 +90,6 @@ public class LancamentoServiceImpl {
 			throw new ValidateException("Lancamento não encontrado: " + id, HttpStatus.NOT_FOUND);
 		}
 		repository.delete(entityOp.get());
-	}
-
-	public List<LancamentoResponse> listarLancamentosPagos(boolean paid) {
-
-		List<Lancamento> listarLancamentosPagos = repository.listarLancamentosPagos(paid);
-		return listarLancamentosPagos.stream().map(this::converterEntityParaResponse).collect(Collectors.toList());
-
 	}
 
 	private Lancamento converterRequestParaEntity(LancamentoRequest lancamentoRequest) {
