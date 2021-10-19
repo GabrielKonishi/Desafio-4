@@ -3,6 +3,7 @@ package com.trilha.back.finacys.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,10 +34,12 @@ public class LancamentoController {
 	@Autowired
 	LancamentoServiceImpl service;
 
+	Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
+
 	@GetMapping(value = "/lancamento/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Retorna um lancamento")
 	public ResponseEntity<LancamentoResponse> buscarLancamentoPorId(@PathVariable Long id) throws ValidateException {
-
+		logger.info("INICIANDO O METODO GET");
 		return new ResponseEntity<LancamentoResponse>(service.buscarLancamentoPorId(id), HttpStatus.OK);
 	}
 

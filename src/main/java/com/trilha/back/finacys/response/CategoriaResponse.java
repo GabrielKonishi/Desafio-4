@@ -1,5 +1,7 @@
 package com.trilha.back.finacys.response;
 
+import com.trilha.back.finacys.entity.Categoria;
+
 public class CategoriaResponse {
 
 	private Long id;
@@ -7,7 +9,8 @@ public class CategoriaResponse {
 	private String name;
 
 	private String description;
-		
+
+
 	public Long getId() {
 		return id;
 	}
@@ -41,6 +44,7 @@ public class CategoriaResponse {
 	}
 
 	public CategoriaResponse() {
+
 		super();
 	}
 	

@@ -1,0 +1,7 @@
+-------------------------------------------------------------------------------
+Test set: com.finance.system.test.Desafio2FinanceApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.214 s <<< FAILURE! - in com.finance.system.test.Desafio2FinanceApplicationTests
+com.finance.system.test.Desafio2FinanceApplicationTests  Time elapsed: 0.213 s  <<< ERROR!
+java.lang.IllegalStateException: Unable to find a @SpringBootConfiguration, you need to use @ContextConfiguration or @SpringBootTest(classes=...) with your test
+
