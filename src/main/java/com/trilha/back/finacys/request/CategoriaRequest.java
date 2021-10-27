@@ -25,8 +25,12 @@ public class CategoriaRequest {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
-	
-	
+
+	public CategoriaRequest() {
+	}
+
+	public CategoriaRequest(String name, String description) {
+		this.name = name;
+		this.description = description;
+	}
 }

@@ -1,28 +1,19 @@
 package com.trilha.back.finacys.controller;
 
-import java.util.List;
-
+import com.trilha.back.finacys.exception.ValidateException;
+import com.trilha.back.finacys.request.CategoriaRequest;
+import com.trilha.back.finacys.response.CategoriaResponse;
+import com.trilha.back.finacys.serviceImpl.CategoriaServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.trilha.back.finacys.exception.ValidateException;
-import com.trilha.back.finacys.request.CategoriaRequest;
-import com.trilha.back.finacys.response.CategoriaResponse;
-import com.trilha.back.finacys.serviceImpl.CategoriaServiceImpl;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.util.List;
 
 @CrossOrigin("*") // essa anotação define que qualquer dominio pode acessar essa api
 @RestController
@@ -38,7 +29,7 @@ public class CategoriaController {
 	@ApiOperation(value = "Retorna uma categoria")
 	public ResponseEntity<CategoriaResponse> buscarCategoriaPorId(@PathVariable(value = "id") Long id)
 			throws ValidateException {
-		logger.info("INICIANDO O METODO GET");
+		logger.info("------INICIANDO O METODO GET------");
 		return new ResponseEntity<CategoriaResponse>(service.buscarCategoria(id), HttpStatus.OK);
 	}
 

@@ -27,7 +27,11 @@ public class ValidateException extends RuntimeException {
 		this.detail = detail;
 	}
 
-	public HttpStatus getStatus() {
+    public ValidateException() {
+
+    }
+
+    public HttpStatus getStatus() {
 		return status;
 	}
 

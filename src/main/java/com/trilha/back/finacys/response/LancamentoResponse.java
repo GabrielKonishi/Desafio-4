@@ -1,97 +1,105 @@
 package com.trilha.back.finacys.response;
 
-import java.time.LocalDate;
-
 import com.trilha.back.finacys.entity.Lancamento;
+
+import java.time.LocalDate;
 
 public class LancamentoResponse {
 
-	private String name;
+    private Long id;
 
-	private String description;
+    private String name;
 
-	private String type;
+    private String description;
 
-	private String amount;
+    private String type;
 
-	private LocalDate date;
+    private String amount;
 
-	private boolean paid;
-	
-	private Long categoria;
+    private LocalDate date;
 
-	public String getName() {
-		return name;
-	}
+    private boolean paid;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    private Long categoria;
 
-	public String getDescription() {
-		return description;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getType() {
-		return type;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public String getAmount() {
-		return amount;
-	}
+    public String getDescription() {
+        return description;
+    }
 
-	public void setAmount(String amount) {
-		this.amount = amount;
-	}
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-	public LocalDate getDate() {
-		return date;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	public boolean isPaid() {
-		return paid;
-	}
+    public String getAmount() {
+        return amount;
+    }
 
-	public void setPaid(boolean paid) {
-		this.paid = paid;
-	}
-	
-	
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
 
-	public Long getCategoria() {
-		return categoria;
-	}
+    public LocalDate getDate() {
+        return date;
+    }
 
-	public void setCategoria(Long categoria) {
-		this.categoria = categoria;
-	}
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
-	public LancamentoResponse(Lancamento lancamento) {
-		super();
-		this.name = lancamento.getName();
-		this.amount = lancamento.getAmount();
-		this.description = lancamento.getDescription();
-		this.paid = lancamento.isPaid();
-		this.type = lancamento.getType();
-		this.date = lancamento.getDate();
-	}
+    public boolean isPaid() {
+        return paid;
+    }
 
-	public LancamentoResponse() {
-		super();
-	}
-	
-	
-	
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+
+    public Long getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Long categoria) {
+        this.categoria = categoria;
+    }
+
+    public LancamentoResponse(Lancamento lancamento) {
+        super();
+        this.name = lancamento.getName();
+        this.amount = lancamento.getAmount();
+        this.description = lancamento.getDescription();
+        this.paid = lancamento.isPaid();
+        this.type = lancamento.getType();
+        this.date = lancamento.getDate();
+    }
+
+    public LancamentoResponse() {
+        super();
+    }
+
+
 }

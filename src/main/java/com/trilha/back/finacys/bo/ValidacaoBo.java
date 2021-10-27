@@ -1,16 +1,15 @@
 package com.trilha.back.finacys.bo;
 
+import com.trilha.back.finacys.exception.ValidateException;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
-
-import org.apache.commons.lang3.StringUtils;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
-
-import com.trilha.back.finacys.exception.ValidateException;
 
 @Component
 public class ValidacaoBo {
@@ -35,12 +34,12 @@ public class ValidacaoBo {
         }
     }
 
- 
 
     public void validarObrigatoriedade(Long value, String campo) {
         if (value == null) {
             exeception(campo);
         }
+
     }
     
     public void validarObrigatoriedade(Integer value, String campo) {

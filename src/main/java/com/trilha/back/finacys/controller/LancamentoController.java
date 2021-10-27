@@ -1,30 +1,20 @@
 package com.trilha.back.finacys.controller;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.trilha.back.finacys.exception.ValidateException;
+import com.trilha.back.finacys.request.LancamentoRequest;
+import com.trilha.back.finacys.response.LancamentoResponse;
+import com.trilha.back.finacys.serviceImpl.LancamentoServiceImpl;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import com.trilha.back.finacys.exception.ValidateException;
-import com.trilha.back.finacys.request.LancamentoRequest;
-import com.trilha.back.finacys.response.LancamentoResponse;
-import com.trilha.back.finacys.serviceImpl.LancamentoServiceImpl;
-
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
@@ -40,6 +30,7 @@ public class LancamentoController {
 	@ApiOperation(value = "Retorna um lancamento")
 	public ResponseEntity<LancamentoResponse> buscarLancamentoPorId(@PathVariable Long id) throws ValidateException {
 		logger.info("INICIANDO O METODO GET");
+
 		return new ResponseEntity<LancamentoResponse>(service.buscarLancamentoPorId(id), HttpStatus.OK);
 	}
 
@@ -55,6 +46,8 @@ public class LancamentoController {
 	@ApiOperation(value = "Cadastra um lancamento")
 	public ResponseEntity<LancamentoResponse> inserirLancamento(@RequestBody LancamentoRequest lancamentoRequest)
 			throws Exception {
+		service.validateCategoryById(lancamentoRequest.getCategoryId().getId());
+
 		return new ResponseEntity<LancamentoResponse>(service.inserirLancamento(lancamentoRequest), HttpStatus.CREATED);
 
 	}

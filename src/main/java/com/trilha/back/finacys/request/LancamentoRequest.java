@@ -1,9 +1,9 @@
 package com.trilha.back.finacys.request;
 
-import java.time.LocalDate;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.trilha.back.finacys.entity.Categoria;
+
+import java.time.LocalDate;
 
 public class LancamentoRequest {
 	
@@ -83,5 +83,17 @@ public class LancamentoRequest {
 	public void setCategoryId(Categoria categoryId) {
 		this.categoryId = categoryId;
 	}
-	
+
+	public LancamentoRequest(String name, String description, String type, String amount, LocalDate date, boolean paid, Categoria categoryId) {
+		this.name = name;
+		this.description = description;
+		this.type = type;
+		this.amount = amount;
+		this.date = date;
+		this.paid = paid;
+		this.categoryId = categoryId;
+	}
+
+	public LancamentoRequest() {
+	}
 }
