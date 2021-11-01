@@ -6,8 +6,6 @@ import java.time.LocalDate;
 
 public class LancamentoResponse {
 
-    private Long id;
-
     private String name;
 
     private String description;
@@ -20,15 +18,8 @@ public class LancamentoResponse {
 
     private boolean paid;
 
-    private Long categoria;
+    private CategoriaResponse categoria;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;
@@ -79,11 +70,11 @@ public class LancamentoResponse {
     }
 
 
-    public Long getCategoria() {
+    public CategoriaResponse getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Long categoria) {
+    public void setCategoria(CategoriaResponse categoria) {
         this.categoria = categoria;
     }
 

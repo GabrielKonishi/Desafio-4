@@ -33,4 +33,7 @@ public class CategoriaRequest {
 		this.name = name;
 		this.description = description;
 	}
+
+
+
 }

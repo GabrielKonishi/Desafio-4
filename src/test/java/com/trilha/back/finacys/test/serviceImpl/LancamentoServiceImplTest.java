@@ -58,7 +58,6 @@ public class LancamentoServiceImplTest {
         Assert.assertEquals("555", lancamentoResponse.getAmount());
         Assert.assertEquals(date, lancamentoResponse.getDate());
         Assert.assertEquals(true, lancamentoResponse.isPaid());
-        Assert.assertEquals(2L, lancamentoResponse.getCategoria().longValue());
     }
 
     @Test
@@ -89,7 +88,6 @@ public class LancamentoServiceImplTest {
         Assert.assertEquals("555", lancamentoResponse.getAmount());
         Assert.assertEquals(date, lancamentoResponse.getDate());
         Assert.assertEquals(true, lancamentoResponse.isPaid());
-        Assert.assertEquals(2L, lancamentoResponse.getCategoria().longValue());
     }
 
     @Test

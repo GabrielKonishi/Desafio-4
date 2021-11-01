@@ -19,7 +19,7 @@ public class Categoria {
     @Column(name = "CATEGORIA_DESCRIPTION")
     private String description;
 
-    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Lancamento.class)
     private List<Lancamento> lancamento;
 
     public Long getId() {
@@ -86,7 +86,5 @@ public class Categoria {
     public Categoria() {
         super();
     }
-
-
 
 }

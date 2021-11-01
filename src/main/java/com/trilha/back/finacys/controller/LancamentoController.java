@@ -37,17 +37,17 @@ public class LancamentoController {
 	@GetMapping(value = "/lancamento", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Retorna uma Lista de lancamentos")
 	public ResponseEntity<List<LancamentoResponse>> buscarTodosLancamentos(
-			@RequestParam(value = "lancamento_paid", required = false) Optional<Boolean> paid) {
+			@RequestParam(value = "lancamento_paid", required = false) Optional<Boolean> paid,
+			@RequestParam(value = "categoria_id", required = false) Optional<Long> categoriaId) {
 
-		return new ResponseEntity<List<LancamentoResponse>>(service.buscarTodosLancamentos(paid), HttpStatus.OK);
+		return new ResponseEntity<List<LancamentoResponse>>(service.buscarTodosLancamentos(paid,categoriaId), HttpStatus.OK);
 	}
 
 	@PostMapping(value = "/lancamento", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Cadastra um lancamento")
 	public ResponseEntity<LancamentoResponse> inserirLancamento(@RequestBody LancamentoRequest lancamentoRequest)
 			throws Exception {
-		service.validateCategoryById(lancamentoRequest.getCategoryId().getId());
-
+		service.validateCategoryById(lancamentoRequest.getCategoria().getId());
 		return new ResponseEntity<LancamentoResponse>(service.inserirLancamento(lancamentoRequest), HttpStatus.CREATED);
 
 	}
@@ -56,7 +56,7 @@ public class LancamentoController {
 	@ApiOperation(value = "Atualiza um lancamento")
 	public ResponseEntity<LancamentoResponse> alterarLancamento(@PathVariable(value = "id") Long id,
 			@RequestBody LancamentoRequest lancamentoRequest) throws ValidateException {
-
+		service.validateCategoryById(lancamentoRequest.getCategoria().getId());
 		return new ResponseEntity<LancamentoResponse>(service.alterarLancamento(id, lancamentoRequest), HttpStatus.OK);
 
 	}

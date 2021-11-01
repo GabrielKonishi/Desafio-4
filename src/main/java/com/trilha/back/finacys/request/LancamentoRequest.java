@@ -26,7 +26,7 @@ public class LancamentoRequest {
 	private boolean paid;
 	
 	@JsonProperty(value = "categoria_id")
-	private Categoria categoryId;
+	private Categoria categoria;
 
 	public String getName() {
 		return name;
@@ -76,24 +76,26 @@ public class LancamentoRequest {
 		this.paid = paid;
 	}
 
-	public Categoria getCategoryId() {
-		return categoryId;
+	public Categoria getCategoria() {
+		return categoria;
 	}
 
-	public void setCategoryId(Categoria categoryId) {
-		this.categoryId = categoryId;
+	public void setcategoria(Categoria categoria) {
+		this.categoria = categoria;
 	}
 
-	public LancamentoRequest(String name, String description, String type, String amount, LocalDate date, boolean paid, Categoria categoryId) {
+	public LancamentoRequest(String name, String description, String type, String amount, LocalDate date, boolean paid, Categoria categoria) {
 		this.name = name;
 		this.description = description;
 		this.type = type;
 		this.amount = amount;
 		this.date = date;
 		this.paid = paid;
-		this.categoryId = categoryId;
+		this.categoria = categoria;
 	}
 
 	public LancamentoRequest() {
 	}
+
+
 }
