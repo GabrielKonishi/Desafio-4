@@ -17,7 +17,6 @@ public class MapperUtil {
                 .<CategoriaResponse>addMapping(src -> src.getCategoria(),
                         (dest, value) -> dest.setCategoria(value));
 
-
         return modelMapper;
     }
 }

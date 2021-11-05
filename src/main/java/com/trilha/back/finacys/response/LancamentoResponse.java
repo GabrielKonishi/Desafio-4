@@ -1,9 +1,11 @@
 package com.trilha.back.finacys.response;
 
 import com.trilha.back.finacys.entity.Lancamento;
+import lombok.Data;
 
 import java.time.LocalDate;
 
+@Data
 public class LancamentoResponse {
 
     private String name;
@@ -20,63 +22,6 @@ public class LancamentoResponse {
 
     private CategoriaResponse categoria;
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getAmount() {
-        return amount;
-    }
-
-    public void setAmount(String amount) {
-        this.amount = amount;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public boolean isPaid() {
-        return paid;
-    }
-
-    public void setPaid(boolean paid) {
-        this.paid = paid;
-    }
-
-
-    public CategoriaResponse getCategoria() {
-        return categoria;
-    }
-
-    public void setCategoria(CategoriaResponse categoria) {
-        this.categoria = categoria;
-    }
 
     public LancamentoResponse(Lancamento lancamento) {
         super();

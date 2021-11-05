@@ -1,8 +1,9 @@
 package com.trilha.back.finacys.exception;
 
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 
-
+@Data
 public class ValidateException extends RuntimeException {
 
 	private static final long serialVersionUID = -1663613332685576789L;
@@ -12,6 +13,7 @@ public class ValidateException extends RuntimeException {
 	private String detail;
 
 	public ValidateException(String message) {
+
 		super(message);
 	}
 
@@ -30,39 +32,5 @@ public class ValidateException extends RuntimeException {
     public ValidateException() {
 
     }
-
-    public HttpStatus getStatus() {
-		return status;
-	}
-
-	public void setStatus(HttpStatus status) {
-		this.status = status;
-	}
-
-	public String getMsg() {
-		return msg;
-	}
-
-	public void setMsg(String msg) {
-		this.msg = msg;
-	}
-
-	public Integer getCode() {
-		return code;
-	}
-
-	public void setCode(Integer code) {
-		this.code = code;
-	}
-
-	public String getDetail() {
-		return detail;
-	}
-
-	public void setDetail(String detail) {
-		this.detail = detail;
-	}
-	
-	
 
 }

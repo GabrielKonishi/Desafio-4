@@ -13,11 +13,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("*")
 @RestController
+@RequestMapping("/lancamento")
 @Api(value = "Api rest lancamento")
 public class LancamentoController {
 
@@ -26,7 +28,8 @@ public class LancamentoController {
 
 	Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
-	@GetMapping(value = "/lancamento/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Retorna um lancamento")
 	public ResponseEntity<LancamentoResponse> buscarLancamentoPorId(@PathVariable Long id) throws ValidateException {
 		logger.info("INICIANDO O METODO GET");
@@ -34,7 +37,7 @@ public class LancamentoController {
 		return new ResponseEntity<LancamentoResponse>(service.buscarLancamentoPorId(id), HttpStatus.OK);
 	}
 
-	@GetMapping(value = "/lancamento", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Retorna uma Lista de lancamentos")
 	public ResponseEntity<List<LancamentoResponse>> buscarTodosLancamentos(
 			@RequestParam(value = "lancamento_paid", required = false) Optional<Boolean> paid,
@@ -43,29 +46,37 @@ public class LancamentoController {
 		return new ResponseEntity<List<LancamentoResponse>>(service.buscarTodosLancamentos(paid,categoriaId), HttpStatus.OK);
 	}
 
-	@PostMapping(value = "/lancamento", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping( produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Cadastra um lancamento")
-	public ResponseEntity<LancamentoResponse> inserirLancamento(@RequestBody LancamentoRequest lancamentoRequest)
+	public ResponseEntity<LancamentoResponse> inserirLancamento(@RequestBody @Valid LancamentoRequest lancamentoRequest)
 			throws Exception {
 		service.validateCategoryById(lancamentoRequest.getCategoria().getId());
 		return new ResponseEntity<LancamentoResponse>(service.inserirLancamento(lancamentoRequest), HttpStatus.CREATED);
 
 	}
 
-	@PutMapping(value = "/lancamento/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Atualiza um lancamento")
 	public ResponseEntity<LancamentoResponse> alterarLancamento(@PathVariable(value = "id") Long id,
-			@RequestBody LancamentoRequest lancamentoRequest) throws ValidateException {
+			@RequestBody @Valid LancamentoRequest lancamentoRequest) throws ValidateException {
 		service.validateCategoryById(lancamentoRequest.getCategoria().getId());
 		return new ResponseEntity<LancamentoResponse>(service.alterarLancamento(id, lancamentoRequest), HttpStatus.OK);
 
 	}
 
-	@DeleteMapping(value = "/lancamento/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ApiOperation(value = "Deleta um lancamento cadastrado")
 	public ResponseEntity<Object> deletarLancamentoPorId(@PathVariable(value = "id") Long id) throws ValidateException {
 		service.deletarLancamento(id);
 		return new ResponseEntity<Object>(HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/calcula", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Integer> calculaMedia(
+			@RequestParam Integer variableX,
+			@RequestParam Integer variableY){
+
+		return new ResponseEntity<Integer>(service.calcularMedia(variableX, variableY), HttpStatus.OK);
 	}
 
 }

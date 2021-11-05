@@ -1,11 +1,16 @@
 package com.trilha.back.finacys.entity;
 
+import com.trilha.back.finacys.request.CategoriaRequest;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.util.List;
-import java.util.Objects;
 
 @Entity
 @Table(name = "CATEGORIA")
+@Data
+@EqualsAndHashCode
 public class Categoria {
 
     @Id
@@ -13,8 +18,10 @@ public class Categoria {
     @Column(name = "ID")
     private Long id;
 
+
     @Column(name = "CATEGORIA_NOME")
     private String name;
+
 
     @Column(name = "CATEGORIA_DESCRIPTION")
     private String description;
@@ -22,59 +29,6 @@ public class Categoria {
     @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Lancamento.class)
     private List<Lancamento> lancamento;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Lancamento> getLancamento() {
-        return lancamento;
-    }
-
-    public void setLancamento(List<Lancamento> lancamento) {
-        this.lancamento = lancamento;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Categoria other = (Categoria) obj;
-        return Objects.equals(id, other.id);
-    }
-
-    @Override
-    public String toString() {
-        return "Categoria [id=" + id + ", name=" + name + ", description=" + description + "]";
-    }
 
     public Categoria(Long id, String name, String description) {
         super();
@@ -87,4 +41,11 @@ public class Categoria {
         super();
     }
 
+
+    public Categoria(CategoriaRequest categoriaRequest) {
+        super();
+        this.id = categoriaRequest.getId();
+        this.name = categoriaRequest.getName();
+        this.description = categoriaRequest.getDescription();
+    }
 }

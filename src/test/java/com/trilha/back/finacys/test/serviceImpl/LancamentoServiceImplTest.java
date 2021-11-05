@@ -5,6 +5,7 @@ import com.trilha.back.finacys.entity.Categoria;
 import com.trilha.back.finacys.entity.Lancamento;
 import com.trilha.back.finacys.repository.CategoriaRepository;
 import com.trilha.back.finacys.repository.LancamentoRepository;
+import com.trilha.back.finacys.request.CategoriaRequest;
 import com.trilha.back.finacys.request.LancamentoRequest;
 import com.trilha.back.finacys.response.LancamentoResponse;
 import com.trilha.back.finacys.serviceImpl.LancamentoServiceImpl;
@@ -64,6 +65,7 @@ public class LancamentoServiceImplTest {
     public void inserirLancamento() {
         LocalDate date = LocalDate.parse("2012-05-01");
         Categoria categoria = new Categoria(2L, "test", "test_description");
+        CategoriaRequest categoriaRequest = new CategoriaRequest(categoria);
         Lancamento lancamento = new Lancamento(1L, "test", "test_description", "1", "555", date, true, categoria);
         LancamentoRequest lancamentoRequest = new LancamentoRequest(
                 "test",
@@ -72,7 +74,7 @@ public class LancamentoServiceImplTest {
                 "555",
                 date,
                 true,
-                categoria
+                categoriaRequest
         );
 
         List<Categoria> listaCategoria = new ArrayList<>();
@@ -94,6 +96,7 @@ public class LancamentoServiceImplTest {
     public void alterarLancamento() {
         LocalDate date = LocalDate.parse("2012-05-01");
         Categoria categoria = new Categoria(2L, "test", "test_description");
+        CategoriaRequest categoriaRequest = new CategoriaRequest(categoria);
         Lancamento lancamento = new Lancamento(1L, "test", "test_description", "1", "555", date, true, categoria);
         bo.validarObrigatoriedade(lancamento.getId(), "lancamento_id");
 
@@ -106,7 +109,7 @@ public class LancamentoServiceImplTest {
                 "556",
                 updatedDate,
                 true,
-                categoria);
+                categoriaRequest);
 
         LancamentoResponse lancamentoResponse = service.alterarLancamento(lancamento.getId(), lancamentoRequest);
         Assert.assertEquals("update_test", lancamentoResponse.getName());

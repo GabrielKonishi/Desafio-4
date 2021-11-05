@@ -1,90 +1,44 @@
 package com.trilha.back.finacys.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.trilha.back.finacys.entity.Categoria;
+import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
+@Data
 public class LancamentoRequest {
 	
 	@JsonProperty(value = "lancamento_name")
+	@NotBlank(message = "O campo nome deve ser preenchido\n")
 	private String name;
 	
 	@JsonProperty(value = "lancamento_description")
+	@NotBlank(message = "O campo descricao deve ser preenchido\n")
 	private String description;
-	
+
 	@JsonProperty(value = "lancamento_type")
+	@NotBlank(message = "O campo type deve ser prenchido")
 	private String type;
 	
 	@JsonProperty(value = "lancamento_amount")
+	@NotBlank(message = "O campo amount deve ser preenchido")
 	private String amount;
 	
 	@JsonProperty(value = "lancamento_date")
+	@PastOrPresent(message = "A data deve ser anterior ao dia do cadastro")
 	private LocalDate date;
 
 	@JsonProperty(value = "lancamento_paid")
+	@NotNull(message = "O campo de pagamento deve ser preenchido")
 	private boolean paid;
 	
 	@JsonProperty(value = "categoria_id")
-	private Categoria categoria;
+	private CategoriaRequest categoria;
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getAmount() {
-		return amount;
-	}
-
-	public void setAmount(String amount) {
-		this.amount = amount;
-	}
-
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
-	public boolean isPaid() {
-		return paid;
-	}
-
-	public void setPaid(boolean paid) {
-		this.paid = paid;
-	}
-
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setcategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-
-	public LancamentoRequest(String name, String description, String type, String amount, LocalDate date, boolean paid, Categoria categoria) {
+	public LancamentoRequest(String name, String description, String type, String amount, LocalDate date, boolean paid, CategoriaRequest categoria) {
 		this.name = name;
 		this.description = description;
 		this.type = type;

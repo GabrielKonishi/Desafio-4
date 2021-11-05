@@ -21,10 +21,11 @@ public class ValidacaoBo {
  
 
     public void validarObrigatoriedade(String value, String campo) {
-        if (StringUtils.isBlank(value)) {
+        if (StringUtils.isBlank(value) || StringUtils.isEmpty(value)) {
             exeception(campo);
         }
     }
+
 
  
 

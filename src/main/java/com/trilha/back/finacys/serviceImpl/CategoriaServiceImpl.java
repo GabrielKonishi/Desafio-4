@@ -28,12 +28,8 @@ public class CategoriaServiceImpl {
 
     public CategoriaResponse buscarCategoria(Long id) throws ValidateException {
         bo.validarObrigatoriedade(id, "id_categoria");
-        Optional<Categoria> categoriaOp = repository.findById(id);
-        if (!categoriaOp.isPresent()) {
-            throw new ValidateException("categoria não encontrada: " + id, HttpStatus.NOT_FOUND);
-        }
-
-        return converterEntityParaResponse(categoriaOp.get());
+        Categoria categoria = repository.findById(id).orElseThrow(() -> new ValidateException("Categoria não encontrada: " + id, HttpStatus.NOT_FOUND));
+        return converterEntityParaResponse(categoria);
 
     }
 
@@ -43,6 +39,7 @@ public class CategoriaServiceImpl {
         if (findAll.isEmpty()) {
             throw new ValidateException("Não há categorias cadastradas", HttpStatus.NOT_FOUND);
         }
+
         return findAll.stream()
                 .map(this::converterEntityParaResponse)
                 .collect(Collectors.toList());
@@ -63,7 +60,7 @@ public class CategoriaServiceImpl {
     }
 
     public CategoriaResponse inserirCategoria(CategoriaRequest categoriaRequest) {
-        validarCamposRequest(categoriaRequest);
+//        validarCamposRequest(categoriaRequest);
         Categoria categoria = converterRequestParaEntity(categoriaRequest);
         repository.save(categoria);
 

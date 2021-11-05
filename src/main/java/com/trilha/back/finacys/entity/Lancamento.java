@@ -1,11 +1,15 @@
 package com.trilha.back.finacys.entity;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 @Table(name = "LANCAMENTO")
+@Data
+@EqualsAndHashCode
 public class Lancamento {
 
 	@Id
@@ -35,92 +39,7 @@ public class Lancamento {
 	@JoinColumn(name = "CATEGORIA_ID", referencedColumnName = "ID")
 	private Categoria categoria;
 
-	public Long getId() {
-		return id;
-	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public String getAmount() {
-		return amount;
-	}
-
-	public void setAmount(String amount) {
-		this.amount = amount;
-	}
-
-	public LocalDate getDate() {
-		return date;
-	}
-
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-
-	public boolean isPaid() {
-		return paid;
-	}
-
-	public void setPaid(boolean paid) {
-		this.paid = paid;
-	}
-
-	public Categoria getCategoria() {
-		return categoria;
-	}
-
-	public void setCategoria(Categoria categoria) {
-		this.categoria = categoria;
-	}
-
-	@Override
-	public String toString() {
-		return "Lancamento [id=" + id + ", name=" + name + ", description=" + description + ", type=" + type
-				+ ", amount=" + amount + ", date=" + date + ", paid=" + paid + ", categoria=" + categoria + "]";
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Lancamento other = (Lancamento) obj;
-		return Objects.equals(id, other.id);
-	}
 
 	public Lancamento(Long id, String name, String description, String type, String amount, LocalDate date,
 			boolean paid, Categoria categoria) {

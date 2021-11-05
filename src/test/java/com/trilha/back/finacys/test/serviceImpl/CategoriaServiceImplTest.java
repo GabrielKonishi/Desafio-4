@@ -35,6 +35,7 @@ public class CategoriaServiceImplTest {
     @MockBean
     ValidacaoBo bo;
 
+
     @Test
     @DisplayName("deve buscar uma categoria por id")
     public void deveRetornarUmaCategoriaComSucesso_buscarCategoria() {

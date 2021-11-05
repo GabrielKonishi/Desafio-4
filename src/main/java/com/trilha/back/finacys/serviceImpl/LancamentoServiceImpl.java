@@ -1,6 +1,7 @@
 package com.trilha.back.finacys.serviceImpl;
 
 import com.trilha.back.finacys.bo.ValidacaoBo;
+import com.trilha.back.finacys.entity.Categoria;
 import com.trilha.back.finacys.entity.Lancamento;
 import com.trilha.back.finacys.exception.ValidateException;
 import com.trilha.back.finacys.repository.CategoriaRepository;
@@ -45,13 +46,15 @@ public class LancamentoServiceImpl {
 
     public List<LancamentoResponse> buscarTodosLancamentos(Optional<Boolean> paid, Optional<Long> categoriaId) {
 
+        if(repository.findAll().isEmpty()){
+            throw new ValidateException("Não há Lancamentos cadastrados", HttpStatus.NOT_FOUND);
+        }
         if (categoriaId.isPresent()) {
             categoriaRepository.findById(categoriaId.get())
                     .orElseThrow(() -> new ValidateException("Categoria não encontrada: " + categoriaId.get().longValue(), HttpStatus.NOT_FOUND));
             return repository.findAll().stream().filter(e -> e.getCategoria().getId().equals(categoriaId.get()))
                     .map(this::converterEntityParaResponse).collect(Collectors.toList());
         }
-
         if (paid.isPresent()) {
             return repository.listarLancamentosPagos(paid).stream()
                     .map(this::converterEntityParaResponse).collect(Collectors.toList());
@@ -114,7 +117,7 @@ public class LancamentoServiceImpl {
         lancamento.setAmount(lancamentoRequest.getAmount());
         lancamento.setDate(lancamentoRequest.getDate());
         lancamento.setPaid(lancamentoRequest.isPaid());
-        lancamento.setCategoria(lancamentoRequest.getCategoria());
+        lancamento.setCategoria(new Categoria(lancamentoRequest.getCategoria()));
         return lancamento;
     }
 
@@ -138,4 +141,18 @@ public class LancamentoServiceImpl {
 
     }
 
+
+    public Integer calcularMedia(Integer x, Integer y) {
+
+        try{
+            return x/y;
+
+        }catch (ArithmeticException e){
+
+            throw new ValidateException("não é possivel fazer a divisão pelo numero informado: " + y, HttpStatus.BAD_REQUEST);
+
+        }
+
+
+    }
 }
