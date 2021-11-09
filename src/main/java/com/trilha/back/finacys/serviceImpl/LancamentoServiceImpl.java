@@ -66,7 +66,7 @@ public class LancamentoServiceImpl {
 
     public LancamentoResponse inserirLancamento(LancamentoRequest request) {
         validarCamposLancamento(request);
-
+        validateCategoryById(request.getCategoria().getId());
         try {
             Lancamento lancamento = converterParaEntityInserir(request);
             repository.save(lancamento);
@@ -79,7 +79,7 @@ public class LancamentoServiceImpl {
     }
 
     public LancamentoResponse alterarLancamento(Long id, LancamentoRequest request) {
-
+        validateCategoryById(request.getCategoria().getId());
         bo.validarObrigatoriedade(id, "lancamento_id");
         validarCamposLancamento(request);
         Lancamento lancamento = repository.findById(id)

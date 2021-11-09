@@ -50,7 +50,6 @@ public class LancamentoController {
 	@ApiOperation(value = "Cadastra um lancamento")
 	public ResponseEntity<LancamentoResponse> inserirLancamento(@RequestBody @Valid LancamentoRequest lancamentoRequest)
 			throws Exception {
-		service.validateCategoryById(lancamentoRequest.getCategoria().getId());
 		return new ResponseEntity<LancamentoResponse>(service.inserirLancamento(lancamentoRequest), HttpStatus.CREATED);
 
 	}
@@ -59,7 +58,7 @@ public class LancamentoController {
 	@ApiOperation(value = "Atualiza um lancamento")
 	public ResponseEntity<LancamentoResponse> alterarLancamento(@PathVariable(value = "id") Long id,
 			@RequestBody @Valid LancamentoRequest lancamentoRequest) throws ValidateException {
-		service.validateCategoryById(lancamentoRequest.getCategoria().getId());
+
 		return new ResponseEntity<LancamentoResponse>(service.alterarLancamento(id, lancamentoRequest), HttpStatus.OK);
 
 	}
