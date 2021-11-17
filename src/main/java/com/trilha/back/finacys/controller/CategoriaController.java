@@ -3,6 +3,7 @@ package com.trilha.back.finacys.controller;
 import com.trilha.back.finacys.exception.ValidateException;
 import com.trilha.back.finacys.request.CategoriaRequest;
 import com.trilha.back.finacys.response.CategoriaResponse;
+import com.trilha.back.finacys.service.CategoriaService;
 import com.trilha.back.finacys.serviceImpl.CategoriaServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +24,7 @@ import java.util.List;
 public class CategoriaController {
 
 	@Autowired
-	CategoriaServiceImpl service;
+	CategoriaService service;
 	
 	Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 

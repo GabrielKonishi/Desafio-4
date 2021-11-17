@@ -1,26 +1,29 @@
 package com.trilha.back.finacys.serviceImpl;
 
 import com.trilha.back.finacys.bo.ValidacaoBo;
-import com.trilha.back.finacys.entity.Categoria;
 import com.trilha.back.finacys.entity.Lancamento;
 import com.trilha.back.finacys.exception.ValidateException;
 import com.trilha.back.finacys.repository.CategoriaRepository;
 import com.trilha.back.finacys.repository.LancamentoRepository;
 import com.trilha.back.finacys.request.LancamentoRequest;
 import com.trilha.back.finacys.response.LancamentoResponse;
+import com.trilha.back.finacys.service.LancamentoService;
+import org.apache.tomcat.jni.Local;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class LancamentoServiceImpl {
+public class LancamentoServiceImpl implements LancamentoService {
 
     @Autowired
     private LancamentoRepository repository;
@@ -79,7 +82,7 @@ public class LancamentoServiceImpl {
     }
 
     public LancamentoResponse alterarLancamento(Long id, LancamentoRequest request) {
-
+        validateCategoryById(request.getCategoria().getId());
         bo.validarObrigatoriedade(id, "lancamento_id");
         validarCamposLancamento(request);
         Lancamento lancamento = repository.findById(id)
@@ -103,6 +106,35 @@ public class LancamentoServiceImpl {
         repository.deleteById(id);
     }
 
+    public List<LancamentoResponse> buscarLancamentoPorDependentes(String date,
+                                                           String amount,
+                                                           Optional<Boolean> paid){
+
+        if(date == null || date.isEmpty()){
+            throw new ValidateException("preencha o campo data", HttpStatus.BAD_REQUEST);
+        }
+        if(amount == null || amount.isEmpty()){
+            throw new ValidateException("preencha o campo amount", HttpStatus.BAD_REQUEST);
+        }
+        if(!paid.isPresent() || paid.get() == null){
+            throw new ValidateException("preencha o campo de pagamento", HttpStatus.BAD_REQUEST);
+        }
+
+
+        List<LancamentoResponse> response = repository.findAll()
+                .stream()
+                .filter(l -> date.equals(l.getDate().toString())
+                        && amount.equals(l.getAmount())
+                        && paid.get().equals(l.isPaid()))
+                .map(this::converterEntityParaResponse)
+                .collect(Collectors.toList());
+
+        if(response.isEmpty()){
+            throw new ValidateException("Não há lancamentos cadastrados com os valores fornecidos", HttpStatus.NOT_FOUND);
+        }
+        return response;
+    }
+
     public boolean validateCategoryById(long id) {
         if (!categoriaRepository.findById(id).isPresent()) {
             throw new ValidateException("Categoria não existe: " + id, HttpStatus.NOT_FOUND);
@@ -117,7 +149,7 @@ public class LancamentoServiceImpl {
         lancamento.setAmount(lancamentoRequest.getAmount());
         lancamento.setDate(lancamentoRequest.getDate());
         lancamento.setPaid(lancamentoRequest.isPaid());
-        lancamento.setCategoria(new Categoria(lancamentoRequest.getCategoria()));
+        lancamento.setCategoria(lancamentoRequest.getCategoria());
         return lancamento;
     }
 
@@ -140,6 +172,7 @@ public class LancamentoServiceImpl {
         bo.validarObrigatoriedade(lancamentoRequest.getCategoria().getId(), "categoria_id");
 
     }
+
 
 
     public Integer calcularMedia(Integer x, Integer y) {

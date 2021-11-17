@@ -3,6 +3,7 @@ package com.trilha.back.finacys.controller;
 import com.trilha.back.finacys.exception.ValidateException;
 import com.trilha.back.finacys.request.LancamentoRequest;
 import com.trilha.back.finacys.response.LancamentoResponse;
+import com.trilha.back.finacys.service.LancamentoService;
 import com.trilha.back.finacys.serviceImpl.LancamentoServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,7 +14,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,7 +27,7 @@ import java.util.Optional;
 public class LancamentoController {
 
 	@Autowired
-	LancamentoServiceImpl service;
+	LancamentoService service;
 
 	Logger logger = org.slf4j.LoggerFactory.getLogger(getClass());
 
@@ -50,7 +53,6 @@ public class LancamentoController {
 	@ApiOperation(value = "Cadastra um lancamento")
 	public ResponseEntity<LancamentoResponse> inserirLancamento(@RequestBody @Valid LancamentoRequest lancamentoRequest)
 			throws Exception {
-		service.validateCategoryById(lancamentoRequest.getCategoria().getId());
 		return new ResponseEntity<LancamentoResponse>(service.inserirLancamento(lancamentoRequest), HttpStatus.CREATED);
 
 	}
@@ -59,7 +61,7 @@ public class LancamentoController {
 	@ApiOperation(value = "Atualiza um lancamento")
 	public ResponseEntity<LancamentoResponse> alterarLancamento(@PathVariable(value = "id") Long id,
 			@RequestBody @Valid LancamentoRequest lancamentoRequest) throws ValidateException {
-		service.validateCategoryById(lancamentoRequest.getCategoria().getId());
+
 		return new ResponseEntity<LancamentoResponse>(service.alterarLancamento(id, lancamentoRequest), HttpStatus.OK);
 
 	}
@@ -77,6 +79,16 @@ public class LancamentoController {
 			@RequestParam Integer variableY){
 
 		return new ResponseEntity<Integer>(service.calcularMedia(variableX, variableY), HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/buscaDependente", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<LancamentoResponse>> buscarLancamentoDependentes(
+			@RequestParam(value = "lancamento_data", required = false) String date,
+			@RequestParam(value = "lancamento_amount", required = false) String amount,
+			@RequestParam(value = "lancamento_paid", required = false) Optional<Boolean> paid){
+		logger.info("INICIANDO DESAFIO 12");
+		return new ResponseEntity<List<LancamentoResponse>>(service
+				.buscarLancamentoPorDependentes(date, amount, paid),HttpStatus.OK);
 	}
 
 }

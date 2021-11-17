@@ -1,6 +1,7 @@
 package com.trilha.back.finacys.request;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.trilha.back.finacys.entity.Categoria;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -36,9 +37,9 @@ public class LancamentoRequest {
 	private boolean paid;
 	
 	@JsonProperty(value = "categoria_id")
-	private CategoriaRequest categoria;
+	private Categoria categoria;
 
-	public LancamentoRequest(String name, String description, String type, String amount, LocalDate date, boolean paid, CategoriaRequest categoria) {
+	public LancamentoRequest(String name, String description, String type, String amount, LocalDate date, boolean paid, Categoria categoria) {
 		this.name = name;
 		this.description = description;
 		this.type = type;

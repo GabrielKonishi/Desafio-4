@@ -9,10 +9,6 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class CategoriaRequest {
-
-	@JsonProperty(value = "id_categoria")
-	@NotNull(message = "o Id não deve ser nulo")
-	private Long id;
 	
 	@JsonProperty(value = "name_categoria")
 	@NotBlank(message = "O campo nome deve ser prenchido")

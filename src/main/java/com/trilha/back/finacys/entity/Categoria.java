@@ -26,7 +26,7 @@ public class Categoria {
     @Column(name = "CATEGORIA_DESCRIPTION")
     private String description;
 
-    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL, targetEntity = Lancamento.class)
+    @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Lancamento> lancamento;
 
 
@@ -44,7 +44,6 @@ public class Categoria {
 
     public Categoria(CategoriaRequest categoriaRequest) {
         super();
-        this.id = categoriaRequest.getId();
         this.name = categoriaRequest.getName();
         this.description = categoriaRequest.getDescription();
     }

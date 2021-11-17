@@ -74,7 +74,7 @@ public class LancamentoServiceImplTest {
                 "555",
                 date,
                 true,
-                categoriaRequest
+                categoria
         );
 
         List<Categoria> listaCategoria = new ArrayList<>();
@@ -109,7 +109,7 @@ public class LancamentoServiceImplTest {
                 "556",
                 updatedDate,
                 true,
-                categoriaRequest);
+                categoria);
 
         LancamentoResponse lancamentoResponse = service.alterarLancamento(lancamento.getId(), lancamentoRequest);
         Assert.assertEquals("update_test", lancamentoResponse.getName());

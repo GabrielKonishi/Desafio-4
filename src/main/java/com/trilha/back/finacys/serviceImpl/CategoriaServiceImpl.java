@@ -6,6 +6,8 @@ import com.trilha.back.finacys.exception.ValidateException;
 import com.trilha.back.finacys.repository.CategoriaRepository;
 import com.trilha.back.finacys.request.CategoriaRequest;
 import com.trilha.back.finacys.response.CategoriaResponse;
+import com.trilha.back.finacys.service.CategoriaService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,13 +19,16 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(rollbackFor = Exception.class)
-public class CategoriaServiceImpl {
+public class CategoriaServiceImpl implements CategoriaService {
 
     @Autowired
     CategoriaRepository repository;
 
     @Autowired
     ValidacaoBo bo;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
 
     public CategoriaResponse buscarCategoria(Long id) throws ValidateException {
@@ -60,7 +65,7 @@ public class CategoriaServiceImpl {
     }
 
     public CategoriaResponse inserirCategoria(CategoriaRequest categoriaRequest) {
-//        validarCamposRequest(categoriaRequest);
+        validarCamposRequest(categoriaRequest);
         Categoria categoria = converterRequestParaEntity(categoriaRequest);
         repository.save(categoria);
 
@@ -78,26 +83,15 @@ public class CategoriaServiceImpl {
     }
 
     private Categoria converterRequestParaEntity(CategoriaRequest categoriaRequest) {
-        Categoria categoria = new Categoria();
-        categoria.setName(categoriaRequest.getName());
-        categoria.setDescription(categoriaRequest.getDescription());
-        return categoria;
+        return modelMapper.map(categoriaRequest, Categoria.class);
     }
 
     private CategoriaResponse converterEntityParaResponse(Categoria categoria) {
-        CategoriaResponse categoriaResponse = new CategoriaResponse();
-        categoriaResponse.setId(categoria.getId());
-        categoriaResponse.setDescription(categoria.getDescription());
-        categoriaResponse.setName(categoria.getName());
-        return categoriaResponse;
+        return modelMapper.map(categoria, CategoriaResponse.class);
     }
 
     private void validarCamposRequest(CategoriaRequest categoriaRequest) {
         bo.validarObrigatoriedade(categoriaRequest.getName(), "name_categoria");
         bo.validarObrigatoriedade(categoriaRequest.getDescription(), "description_categoria");
     }
-
-    // criar um metodo para validar a entrada do request
-    // alterar os sysouts por log4J
-
 }
