@@ -1,4 +1,4 @@
-package com.trilha.back.finacys.serviceImpl;
+package com.trilha.back.finacys.service.impl;
 
 import com.trilha.back.finacys.bo.ValidacaoBo;
 import com.trilha.back.finacys.entity.Categoria;
@@ -70,7 +70,6 @@ public class CategoriaServiceImpl implements CategoriaService {
         repository.save(categoria);
 
         return converterEntityParaResponse(categoria);
-
     }
 
     public void deletarCategoriaPorId(Long id) {

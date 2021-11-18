@@ -12,7 +12,9 @@ public interface LancamentoService {
 
     public LancamentoResponse buscarLancamentoPorId(Long id);
 
-    public List<LancamentoResponse> buscarTodosLancamentos(Optional<Boolean> paid, Optional<Long> categoriaId);
+    public List<LancamentoResponse> buscarTodosLancamentos();
+
+    public List<LancamentoResponse> buscarLancamentosPorPagamento(boolean paid, Optional<Long> categoriaId);
 
     public LancamentoResponse inserirLancamento(LancamentoRequest request);
 

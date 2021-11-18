@@ -2,7 +2,7 @@ package com.trilha.back.finacys.test.controller;
 
 import com.trilha.back.finacys.controller.CategoriaController;
 import com.trilha.back.finacys.response.CategoriaResponse;
-import com.trilha.back.finacys.serviceImpl.CategoriaServiceImpl;
+import com.trilha.back.finacys.service.impl.CategoriaServiceImpl;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

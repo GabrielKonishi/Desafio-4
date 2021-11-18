@@ -6,7 +6,7 @@ import com.trilha.back.finacys.exception.ValidateException;
 import com.trilha.back.finacys.repository.CategoriaRepository;
 import com.trilha.back.finacys.request.CategoriaRequest;
 import com.trilha.back.finacys.response.CategoriaResponse;
-import com.trilha.back.finacys.serviceImpl.CategoriaServiceImpl;
+import com.trilha.back.finacys.service.impl.CategoriaServiceImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -17,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.validation.constraints.AssertTrue;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,7 +76,8 @@ public class CategoriaServiceImplTest {
         Categoria categoria = new Categoria(1L, "test_name", "test_description");
 
 
-        Mockito.doThrow(new ValidateException()).when(service.buscarCategoria(2L)).getId();
+        Mockito.doThrow(new ValidateException("Categoria não encontrada: ", HttpStatus.NOT_FOUND))
+                .when(service.buscarCategoria(2L)).getId();
         CategoriaResponse categoriaResponse = service.buscarCategoria(2L);
     }
 
@@ -113,8 +114,8 @@ public class CategoriaServiceImplTest {
 
         Assert.assertEquals("insert_test", categoriaResponse.getName());
         Assert.assertEquals("insert_description_test", categoriaResponse.getDescription());
-        Assert.assertEquals(categoriaResponse.getName(), categoria.getName());
-        Assert.assertEquals(categoriaResponse.getDescription(), categoria.getDescription());
+        Assert.assertEquals(categoria.getName(), categoriaResponse.getName());
+        Assert.assertEquals(categoria.getDescription(), categoriaResponse.getDescription());
 
     }
 

@@ -1,4 +1,4 @@
-package com.trilha.back.finacys.serviceImpl;
+package com.trilha.back.finacys.service.impl;
 
 import com.trilha.back.finacys.bo.ValidacaoBo;
 import com.trilha.back.finacys.entity.Lancamento;
@@ -8,15 +8,12 @@ import com.trilha.back.finacys.repository.LancamentoRepository;
 import com.trilha.back.finacys.request.LancamentoRequest;
 import com.trilha.back.finacys.response.LancamentoResponse;
 import com.trilha.back.finacys.service.LancamentoService;
-import org.apache.tomcat.jni.Local;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,28 +44,31 @@ public class LancamentoServiceImpl implements LancamentoService {
 
     }
 
-    public List<LancamentoResponse> buscarTodosLancamentos(Optional<Boolean> paid, Optional<Long> categoriaId) {
+    public List<LancamentoResponse> buscarTodosLancamentos() {
+        if (repository.findAll().isEmpty()) {
+            throw new ValidateException("Não há Lancamentos cadastrados", HttpStatus.NOT_FOUND);
+        }
+        return repository.findAll().stream().map(this::converterEntityParaResponse).collect(Collectors.toList());
+    }
 
-        if(repository.findAll().isEmpty()){
+    public List<LancamentoResponse> buscarLancamentosPorPagamento(boolean paid, Optional<Long> categoriaId) {
+
+        if (repository.findAll().isEmpty()) {
             throw new ValidateException("Não há Lancamentos cadastrados", HttpStatus.NOT_FOUND);
         }
         if (categoriaId.isPresent()) {
             categoriaRepository.findById(categoriaId.get())
                     .orElseThrow(() -> new ValidateException("Categoria não encontrada: " + categoriaId.get().longValue(), HttpStatus.NOT_FOUND));
-            return repository.findAll().stream().filter(e -> e.getCategoria().getId().equals(categoriaId.get()))
-                    .map(this::converterEntityParaResponse).collect(Collectors.toList());
-        }
-        if (paid.isPresent()) {
             return repository.listarLancamentosPagos(paid).stream()
+                    .filter(e -> e.getCategoria().getId().equals(categoriaId.get()))
                     .map(this::converterEntityParaResponse).collect(Collectors.toList());
         }
-
-        return repository.findAll().stream().map(this::converterEntityParaResponse).collect(Collectors.toList());
+        return repository.listarLancamentosPagos(paid).stream()
+                .map(this::converterEntityParaResponse).collect(Collectors.toList());
     }
 
 
     public LancamentoResponse inserirLancamento(LancamentoRequest request) {
-        validarCamposLancamento(request);
 
         try {
             Lancamento lancamento = converterParaEntityInserir(request);
@@ -82,9 +82,7 @@ public class LancamentoServiceImpl implements LancamentoService {
     }
 
     public LancamentoResponse alterarLancamento(Long id, LancamentoRequest request) {
-        validateCategoryById(request.getCategoria().getId());
         bo.validarObrigatoriedade(id, "lancamento_id");
-        validarCamposLancamento(request);
         Lancamento lancamento = repository.findById(id)
                 .orElseThrow(() -> new ValidateException("Lancamento não encontrado: " + id, HttpStatus.NOT_FOUND));
 
@@ -107,19 +105,17 @@ public class LancamentoServiceImpl implements LancamentoService {
     }
 
     public List<LancamentoResponse> buscarLancamentoPorDependentes(String date,
-                                                           String amount,
-                                                           Optional<Boolean> paid){
-
-        if(date == null || date.isEmpty()){
+                                                                   String amount,
+                                                                   Optional<Boolean> paid) {
+        if (date == null || date.isEmpty()) {
             throw new ValidateException("preencha o campo data", HttpStatus.BAD_REQUEST);
         }
-        if(amount == null || amount.isEmpty()){
+        if (amount == null || amount.isEmpty()) {
             throw new ValidateException("preencha o campo amount", HttpStatus.BAD_REQUEST);
         }
-        if(!paid.isPresent() || paid.get() == null){
+        if (!paid.isPresent()) {
             throw new ValidateException("preencha o campo de pagamento", HttpStatus.BAD_REQUEST);
         }
-
 
         List<LancamentoResponse> response = repository.findAll()
                 .stream()
@@ -129,7 +125,7 @@ public class LancamentoServiceImpl implements LancamentoService {
                 .map(this::converterEntityParaResponse)
                 .collect(Collectors.toList());
 
-        if(response.isEmpty()){
+        if (response.isEmpty()) {
             throw new ValidateException("Não há lancamentos cadastrados com os valores fornecidos", HttpStatus.NOT_FOUND);
         }
         return response;
@@ -162,25 +158,12 @@ public class LancamentoServiceImpl implements LancamentoService {
         return modelMapper.map(lancamento, LancamentoResponse.class);
     }
 
-
-    private void validarCamposLancamento(LancamentoRequest lancamentoRequest) {
-        bo.validarObrigatoriedade(lancamentoRequest.getName(), "lancamento_name");
-        bo.validarObrigatoriedade(lancamentoRequest.getDescription(), "lancamento_description");
-        bo.validarObrigatoriedade(lancamentoRequest.getType(), "lancamento_type");
-        bo.validarObrigatoriedade(lancamentoRequest.getAmount(), "lancamento_amount");
-        bo.validarObrigatoriedade(lancamentoRequest.getDate(), "lancamento_date");
-        bo.validarObrigatoriedade(lancamentoRequest.getCategoria().getId(), "categoria_id");
-
-    }
-
-
-
     public Integer calcularMedia(Integer x, Integer y) {
 
-        try{
-            return x/y;
+        try {
+            return x / y;
 
-        }catch (ArithmeticException e){
+        } catch (ArithmeticException e) {
 
             throw new ValidateException("não é possivel fazer a divisão pelo numero informado: " + y, HttpStatus.BAD_REQUEST);
 

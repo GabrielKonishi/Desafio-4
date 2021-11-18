@@ -4,7 +4,6 @@ import com.trilha.back.finacys.exception.ValidateException;
 import com.trilha.back.finacys.request.CategoriaRequest;
 import com.trilha.back.finacys.response.CategoriaResponse;
 import com.trilha.back.finacys.service.CategoriaService;
-import com.trilha.back.finacys.serviceImpl.CategoriaServiceImpl;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
